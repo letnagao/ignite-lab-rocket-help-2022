@@ -9,3 +9,4 @@
 
 #
 - react-native-svg-transformer
+- phosphor icons
