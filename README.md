@@ -6,3 +6,6 @@
 
 ##Library
 - React, NativeBase
+
+#
+- react-native-svg-transformer
