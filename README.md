@@ -5,7 +5,7 @@
 - Mobile App Expo
 
 ##Library
-- React, NativeBase
+- React, NativeBase, Navigation
 
 #
 - react-native-svg-transformer
