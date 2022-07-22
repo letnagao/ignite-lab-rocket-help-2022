@@ -1,4 +1,4 @@
-rootProject.name = 'ignitelabrockethelp2022'
+rootProject.name = 'ignite-lab-rocket-help-2022'
 
 apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle");
 useExpoModules()

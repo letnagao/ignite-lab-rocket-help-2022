@@ -10,3 +10,4 @@
 #
 - react-native-svg-transformer
 - phosphor icons
+- react-native-firebase
