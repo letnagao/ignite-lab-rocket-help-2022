@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import { Alert } from 'react-native'
-import auth from '@react-native-firebase/auth'
+import { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {
   HStack,
   IconButton,
@@ -10,22 +11,26 @@ import {
   Heading,
   FlatList,
   Center,
-} from 'native-base'
-import { SignOut } from 'phosphor-react-native'
-import { ChatTeardropText } from 'phosphor-react-native'
-import Logo from '../assets/logo_secondary.svg'
-import { Filter } from '../components/Filter'
-import { Order, OrderProps } from '../components/Order'
-import { Button } from '../components/Button'
-import { useNavigation } from '@react-navigation/native'
+} from 'native-base';
+import { SignOut } from 'phosphor-react-native';
+import { ChatTeardropText } from 'phosphor-react-native';
+import { dateFormat } from '../utils/firestoreDateFormat';
+
+import Logo from '../assets/logo_secondary.svg';
+
+import { Filter } from '../components/Filter';
+import { Order, OrderProps } from '../components/Order';
+import { Button } from '../components/Button';
+import { useNavigation } from '@react-navigation/native';
 
 export function Home() {
+  const [loading, setIsLoading] = useState(true);
   const [statusSelected, setStatusSelected] = useState<'open' | 'closed'>(
     'open',
   )
   const [orders, setOrders] = useState<OrderProps[]>([
     {
-      id: '123',
+      id: '456',
       patrimony: '123456',
       when: '18/07/2022 às 14:00',
       status: 'open',
@@ -51,6 +56,28 @@ export function Home() {
         return Alert.alert('Sair', 'Não foi possível sair.');
     });
   }
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    const subscriber = firestore()
+    .collection('orders')
+    .where('status', '==', statusSelected)
+    .onSnapshot(snapshot => {
+      const data = snapshot.docs.map(doc => {
+        const { patrimony, description, status, created_at } = doc.data();
+      
+        return {
+          id: doc.id,
+          patrimony,
+          description,
+          status,
+          when: dateFormat(created_at)
+        }
+      })
+    })
+
+  }, []);
 
   return (
     <VStack flex={1} pb={6} bg="gray.700">
